@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,17 +14,17 @@ public class FinanceAppGUI extends JFrame {
         manager = new TransactionManager();
 
         setTitle("Personal Finance Tracker");
-        setSize(500, 600);
+        setSize(600, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         // Input panel
-        JPanel inputPanel = new JPanel(new GridLayout(5, 2, 5, 5));
-        inputPanel.setBorder(BorderFactory.createTitledBorder("Add Transaction"));
+        JPanel inputPanel = new JPanel(new GridLayout(6, 2, 5, 5));
+        inputPanel.setBorder(BorderFactory.createTitledBorder("Add or Import Transaction"));
 
         amountField = new JTextField();
         categoryField = new JTextField();
-        dateField = new JTextField("2025-04-16");
+        dateField = new JTextField(LocalDate.now().toString());
         descriptionField = new JTextField();
 
         inputPanel.add(new JLabel("Amount:"));
@@ -36,10 +37,12 @@ public class FinanceAppGUI extends JFrame {
         inputPanel.add(descriptionField);
 
         JButton addButton = new JButton("Add Transaction");
-        inputPanel.add(addButton);
+        JButton viewButton = new JButton("View Records");
+        JButton importButton = new JButton("Import Transactions");
 
-        JButton viewButton = new JButton("View Transactions");
+        inputPanel.add(addButton);
         inputPanel.add(viewButton);
+        inputPanel.add(importButton);
 
         add(inputPanel, BorderLayout.NORTH);
 
@@ -49,7 +52,7 @@ public class FinanceAppGUI extends JFrame {
         transactionArea.setBorder(BorderFactory.createTitledBorder("Transaction Records"));
         add(new JScrollPane(transactionArea), BorderLayout.CENTER);
 
-        // Add transaction action
+        // Add transaction button
         addButton.addActionListener(e -> {
             try {
                 double amount = Double.parseDouble(amountField.getText());
@@ -62,16 +65,36 @@ public class FinanceAppGUI extends JFrame {
                 JOptionPane.showMessageDialog(this, "Transaction added successfully!");
                 clearFields();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Invalid input. Please check the format.");
+                JOptionPane.showMessageDialog(this, "Invalid input format. Please check your entries.");
             }
         });
 
-        // View transactions action
-        viewButton.addActionListener(e -> {
-            List<Transaction> transactions = manager.getTransactions();
-            transactionArea.setText("");
-            for (Transaction t : transactions) {
-                transactionArea.append(t.toString() + "\n");
+        // View records button
+        viewButton.addActionListener(e -> refreshTransactionList());
+
+        // Import transactions button
+        importButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                boolean success = false;
+
+                if (selectedFile.getName().endsWith(".csv")) {
+                    success = manager.importFromCSV(selectedFile);
+                } else if (selectedFile.getName().endsWith(".json")) {
+                    success = manager.importFromJSON(selectedFile);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Only CSV or JSON files are supported!");
+                    return;
+                }
+
+                if (success) {
+                    JOptionPane.showMessageDialog(this, "Import successful!");
+                    refreshTransactionList();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Import failed. File format error.");
+                }
             }
         });
     }
@@ -83,9 +106,15 @@ public class FinanceAppGUI extends JFrame {
         descriptionField.setText("");
     }
 
+    private void refreshTransactionList() {
+        List<Transaction> transactions = manager.getTransactions();
+        transactionArea.setText("");
+        for (Transaction t : transactions) {
+            transactionArea.append(t.toString() + "\n");
+        }
+    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new FinanceAppGUI().setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new FinanceAppGUI().setVisible(true));
     }
 }
