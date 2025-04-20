@@ -36,7 +36,7 @@ Personal Wealth Assistant is a comprehensive desktop application for personal fi
 
 ## Building the Project  
 
-To build the project from source:  
+To build the project, please run the following command in the wealth5 directory:  
 
 ```bash  
 mvn clean package  
