@@ -1,0 +1,9 @@
+{
+  "defaultCurrency" : "CNY",
+  "dateFormat" : "yyyy-MM-dd",
+  "fileFormat" : "JSON",
+  "transactionsFilePath" : "data/transactions.json",
+  "budgetsFilePath" : "data/budgets.json",
+  "categoriesFilePath" : "data/categories.json",
+  "enableAutoAssignment" : true
+}

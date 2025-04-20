@@ -1,0 +1,33 @@
+[ {
+  "name" : "salary",
+  "type" : "INCOME",
+  "keywords" : [ ]
+}, {
+  "name" : "bonus",
+  "type" : "INCOME",
+  "keywords" : [ ]
+}, {
+  "name" : "investment",
+  "type" : "INCOME",
+  "keywords" : [ ]
+}, {
+  "name" : "food",
+  "type" : "EXPENSE",
+  "keywords" : [ ]
+}, {
+  "name" : "transportation",
+  "type" : "EXPENSE",
+  "keywords" : [ ]
+}, {
+  "name" : "shopping",
+  "type" : "EXPENSE",
+  "keywords" : [ ]
+}, {
+  "name" : "housing",
+  "type" : "EXPENSE",
+  "keywords" : [ ]
+}, {
+  "name" : "entertainment",
+  "type" : "EXPENSE",
+  "keywords" : [ ]
+} ]
