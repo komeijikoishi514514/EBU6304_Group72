@@ -58,10 +58,12 @@ The current prototype and project documentation do not explicitly outline AI-spe
    - AI Opportunity: An anomaly detection algorithm could flag unusual spending patterns (e.g., sudden large expenses) in real-time, enhancing financial oversight.  
 4. Data Parsing & Import Optimization
    - The "Import Transactions" page supports CSV/JSON parsing.  
-   - AI Opportunity: AI-driven data validation could improve error detection during file imports (e.g., mismatched formats, outlier detection).  
+   - AI Opportunity: AI-driven data validation could improve error detection during file imports (e.g., mismatched formats, outlier detection).
+   
 Implementation Considerations
 - The project’s Java codebase (noted in the marksheet) could integrate libraries like TensorFlow or scikit-learn for model deployment.  
 - Testing feedback highlights the need for detailed documentation and JUnit examples, which would be critical for validating AI components (e.g., model accuracy, edge cases).  
-- The prototype’s low score (2/4) suggests prioritizing core functionalities first, with AI enhancements proposed as future iterations.  
+- The prototype’s low score (2/4) suggests prioritizing core functionalities first, with AI enhancements proposed as future iterations.
+ 
 Conclusion
 While AI is not explicitly implemented in the current version, the system’s design provides foundational data structures (transaction records, categories) and use cases (forecasting, categorization) that align well with AI integration for advanced automation and analytics.
