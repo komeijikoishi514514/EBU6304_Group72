@@ -66,4 +66,4 @@ Implementation Considerations
 - The prototype’s low score (2/4) suggests prioritizing core functionalities first, with AI enhancements proposed as future iterations.
  
 Conclusion
-While AI is not explicitly implemented in the current version, the system’s design provides foundational data structures (transaction records, categories) and use cases (forecasting, categorization) that align well with AI integration for advanced automation and analytics.
+- While AI is not explicitly implemented in the current version, the system’s design provides foundational data structures (transaction records, categories) and use cases (forecasting, categorization) that align well with AI integration for advanced automation and analytics.
