@@ -1,0 +1,33 @@
+[ {
+  "name" : "salary",
+  "type" : "INCOME",
+  "keywords" : [ "salary", "wage" ]
+}, {
+  "name" : "bonus",
+  "type" : "INCOME",
+  "keywords" : [ "bonus", "reward" ]
+}, {
+  "name" : "investment",
+  "type" : "INCOME",
+  "keywords" : [ "investment", "dividend", "interest", "return" ]
+}, {
+  "name" : "food",
+  "type" : "EXPENSE",
+  "keywords" : [ "food", "restaurant", "takeout", "meal" ]
+}, {
+  "name" : "transportation",
+  "type" : "EXPENSE",
+  "keywords" : [ "transportation", "bus", "subway", "taxi", "gas" ]
+}, {
+  "name" : "shopping",
+  "type" : "EXPENSE",
+  "keywords" : [ "shopping", "mall", "store", "online" ]
+}, {
+  "name" : "housing",
+  "type" : "EXPENSE",
+  "keywords" : [ "housing", "rent", "utility", "property" ]
+}, {
+  "name" : "entertainment",
+  "type" : "EXPENSE",
+  "keywords" : [ "entertainment", "movie", "game", "travel" ]
+} ]

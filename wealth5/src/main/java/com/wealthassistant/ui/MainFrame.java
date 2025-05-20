@@ -15,6 +15,7 @@ public class MainFrame extends JFrame {
     private TransactionHistoryPanel transactionHistoryPanel;
     private ReportsPanel reportsPanel;
     private SettingsPanel settingsPanel;
+    private AIAdvicePanel aiAdvicePanel;
 
     // 定义主题颜色
     public static final Color PRIMARY_COLOR = new Color(41, 128, 185); // 深蓝色
@@ -35,6 +36,7 @@ public class MainFrame extends JFrame {
     public static final String TRANSACTION_HISTORY = "TRANSACTION_HISTORY";
     public static final String REPORTS = "REPORTS";
     public static final String SETTINGS = "SETTINGS";
+    public static final String AI_ADVICE = "AI_ADVICE";
 
     public MainFrame() {
         setTitle("Personal Wealth Assistant");
@@ -77,6 +79,7 @@ public class MainFrame extends JFrame {
         transactionHistoryPanel = new TransactionHistoryPanel(this);
         reportsPanel = new ReportsPanel(this);
         settingsPanel = new SettingsPanel(this);
+        aiAdvicePanel = new AIAdvicePanel();
         
         // 为每个面板添加内边距
         addPanelWithPadding(DASHBOARD, dashboardPanel);
@@ -85,6 +88,7 @@ public class MainFrame extends JFrame {
         addPanelWithPadding(TRANSACTION_HISTORY, transactionHistoryPanel);
         addPanelWithPadding(REPORTS, reportsPanel);
         addPanelWithPadding(SETTINGS, settingsPanel);
+        addPanelWithPadding(AI_ADVICE, aiAdvicePanel);
     }
     
     private void addPanelWithPadding(String name, JPanel panel) {
@@ -138,6 +142,7 @@ public class MainFrame extends JFrame {
         addNavButton(sidebarPanel, "Import Transactions", IMPORT_TRANSACTIONS);
         addNavButton(sidebarPanel, "Transaction History", TRANSACTION_HISTORY);
         addNavButton(sidebarPanel, "Reports", REPORTS);
+        addNavButton(sidebarPanel, "AI Advice", AI_ADVICE);
         addNavButton(sidebarPanel, "Settings", SETTINGS);
         
         sidebarPanel.add(Box.createVerticalGlue());

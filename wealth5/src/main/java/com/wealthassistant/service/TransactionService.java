@@ -127,4 +127,15 @@ public class TransactionService {
     public int importTransactionsFromJson(String jsonFilePath) throws DataAccessException {
         return transactionDao.importTransactionsFromJson(jsonFilePath);
     }
+
+    /**
+     * Get transactions within a date range
+     * @param startDate the start date (inclusive)
+     * @param endDate the end date (inclusive)
+     * @return list of transactions within the date range
+     * @throws DataAccessException if there is an error accessing the data
+     */
+    public List<Transaction> getTransactionsByDateRange(LocalDate startDate, LocalDate endDate) throws DataAccessException {
+        return transactionDao.getTransactionsByDate(startDate, endDate);
+    }
 } 

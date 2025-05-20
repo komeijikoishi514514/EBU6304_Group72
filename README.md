@@ -23,6 +23,7 @@ Personal Wealth Assistant is a comprehensive desktop application for personal fi
 ## System Requirements  
 
 - Java 17 or later  
+- llama3.2 model locally deploymented
 - Minimum screen resolution: 1024 x 768  
 - Operating System: Windows, macOS, or Linux  
 
@@ -41,7 +42,15 @@ To build the project, please run the following command in the wealth5 directory:
 ```bash  
 mvn clean package  
 ```  
+To use AI advice part，run：
+```bash  
+ 
+curl -fsSL https://ollama.com/install.sh | sh
+ollama pull llama3.2
+ollama run llama3.2
 
+```   
+ 
 After a successful build, the executable JAR file can be found in the `target` directory.
 
 ## AI Component Description
