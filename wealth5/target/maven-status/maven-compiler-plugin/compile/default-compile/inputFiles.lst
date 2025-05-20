@@ -1,6 +1,7 @@
 /Users/keleideng/Desktop/EBU6304_Group72/wealth5/src/main/java/com/wealthassistant/dao/DataAccessException.java
 /Users/keleideng/Desktop/EBU6304_Group72/wealth5/src/main/java/com/wealthassistant/service/TransactionService.java
 /Users/keleideng/Desktop/EBU6304_Group72/wealth5/src/main/java/com/wealthassistant/ui/MainFrame.java
+/Users/keleideng/Desktop/EBU6304_Group72/wealth5/src/main/java/com/wealthassistant/service/LlamaService.java
 /Users/keleideng/Desktop/EBU6304_Group72/wealth5/src/main/java/com/wealthassistant/ui/panels/AIAdvicePanel.java
 /Users/keleideng/Desktop/EBU6304_Group72/wealth5/src/main/java/com/wealthassistant/model/Budget.java
 /Users/keleideng/Desktop/EBU6304_Group72/wealth5/src/main/java/com/wealthassistant/dao/SettingsDao.java

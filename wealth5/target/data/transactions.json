@@ -1,0 +1,41 @@
+[ {
+  "id" : "bcfba2fc-6fd8-4803-8bf8-0bf221c7fce4",
+  "amount" : 10000.0,
+  "currencyUnit" : "CNY",
+  "type" : "INCOME",
+  "category" : "salary",
+  "date" : "2025-04-23",
+  "notes" : null
+}, {
+  "id" : "cf54bf7f-f852-4797-8f9c-f248a0870e0e",
+  "amount" : 2000.0,
+  "currencyUnit" : "CNY",
+  "type" : "INCOME",
+  "category" : "bonus",
+  "date" : "2025-04-23",
+  "notes" : null
+}, {
+  "id" : "07a0c281-d42f-4b7a-8cae-a0ab8deaff19",
+  "amount" : 200.0,
+  "currencyUnit" : "CNY",
+  "type" : "EXPENSE",
+  "category" : "food",
+  "date" : "2025-04-23",
+  "notes" : null
+}, {
+  "id" : "f9849e03-aa3e-4882-be9d-d003dfa3f19a",
+  "amount" : 300.0,
+  "currencyUnit" : "CNY",
+  "type" : "EXPENSE",
+  "category" : "transportation",
+  "date" : "2025-04-23",
+  "notes" : null
+}, {
+  "id" : "facaa640-842d-42b5-92f5-869dd23a451b",
+  "amount" : 500.0,
+  "currencyUnit" : "CNY",
+  "type" : "EXPENSE",
+  "category" : "shopping",
+  "date" : "2025-04-24",
+  "notes" : "buy clothes"
+} ]

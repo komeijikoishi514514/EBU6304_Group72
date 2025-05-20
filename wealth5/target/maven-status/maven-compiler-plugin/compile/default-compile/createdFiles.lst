@@ -7,6 +7,7 @@ com/wealthassistant/ui/panels/SettingsPanel$2.class
 com/wealthassistant/ui/MainFrame$1.class
 com/wealthassistant/dao/CategoryDao.class
 com/wealthassistant/ui/panels/DashboardPanel.class
+com/wealthassistant/service/LlamaService.class
 com/wealthassistant/dao/TransactionDao.class
 com/wealthassistant/ui/MainFrame.class
 com/wealthassistant/ui/panels/SettingsPanel$1.class

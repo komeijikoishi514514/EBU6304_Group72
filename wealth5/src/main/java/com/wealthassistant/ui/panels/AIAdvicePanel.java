@@ -1,18 +1,29 @@
 package com.wealthassistant.ui.panels;
 
+import com.wealthassistant.service.LlamaService;
+import com.wealthassistant.model.Transaction;
+import com.wealthassistant.service.TransactionService;
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AIAdvicePanel extends JPanel {
     private JSpinner startDateSpinner;
     private JSpinner endDateSpinner;
     private JButton generateButton;
     private JTextArea adviceArea;
+    private LlamaService llamaService;
+    private TransactionService transactionService;
+    private JProgressBar progressBar;
 
     public AIAdvicePanel() {
         setLayout(new BorderLayout());
+        llamaService = new LlamaService();
+        transactionService = new TransactionService();
         initializeComponents();
         layoutComponents();
     }
@@ -39,10 +50,15 @@ public class AIAdvicePanel extends JPanel {
         adviceArea.setEditable(false);
         adviceArea.setLineWrap(true);
         adviceArea.setWrapStyleWord(true);
+        
+        // Initialize progress bar
+        progressBar = new JProgressBar();
+        progressBar.setStringPainted(true);
+        progressBar.setVisible(false);
     }
 
     private void layoutComponents() {
-        // Create top control panel
+        // Create control panel
         JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         controlPanel.add(new JLabel("Start Date:"));
         controlPanel.add(startDateSpinner);
@@ -57,26 +73,67 @@ public class AIAdvicePanel extends JPanel {
         // Add to main panel
         add(controlPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
+        add(progressBar, BorderLayout.SOUTH);
     }
 
     private void generateAdvice() {
-        // Get selected dates
         LocalDate startDate = ((java.util.Date) startDateSpinner.getValue()).toInstant()
-                .atZone(java.time.ZoneId.systemDefault())
+                .atZone(ZoneId.systemDefault())
                 .toLocalDate();
         LocalDate endDate = ((java.util.Date) endDateSpinner.getValue()).toInstant()
-                .atZone(java.time.ZoneId.systemDefault())
+                .atZone(ZoneId.systemDefault())
                 .toLocalDate();
 
-        // This is where the actual AI advice generation logic will be added in the future
-        String advice = String.format("AI Advice (%s to %s):\n\n" +
-                "1. Based on your portfolio analysis, consider increasing your stock allocation\n" +
-                "2. Consider adding defensive assets such as gold ETFs\n" +
-                "3. Focus on opportunities in the technology and healthcare sectors\n" +
-                "4. Consider adding some fixed-income products to your portfolio",
-                startDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
-                endDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        // Show loading message and progress bar
+        adviceArea.setText("Analyzing transaction data... Please wait...");
+        adviceArea.setCaretPosition(0);
+        progressBar.setVisible(true);
+        progressBar.setIndeterminate(true);
+        generateButton.setEnabled(false);
 
-        adviceArea.setText(advice);
+        // Generate advice in a background thread
+        SwingUtilities.invokeLater(() -> {
+            try {
+                // Check if Ollama service is available
+                if (!llamaService.isServiceAvailable()) {
+                    adviceArea.setText("Error: Ollama service is not available. Please make sure to:\n" +
+                        "1. Install Ollama from https://ollama.ai\n" +
+                        "2. Run 'ollama serve' in terminal\n" +
+                        "3. Run 'ollama pull llama2' to download the model\n" +
+                        "4. Restart the application");
+                    return;
+                }
+
+                // Get transactions for the selected period
+                List<Transaction> transactions = transactionService.getTransactionsByDateRange(startDate, endDate);
+                
+                if (transactions.isEmpty()) {
+                    adviceArea.setText("No transactions found for the selected period.");
+                    return;
+                }
+                
+                // Calculate total income and expenses by category
+                double totalIncome = transactions.stream()
+                    .filter(t -> t.getAmount() > 0)
+                    .mapToDouble(Transaction::getAmount)
+                    .sum();
+                
+                Map<String, Double> categoryExpenses = transactions.stream()
+                    .filter(t -> t.getAmount() < 0)
+                    .collect(Collectors.groupingBy(
+                        Transaction::getCategory,
+                        Collectors.summingDouble(t -> Math.abs(t.getAmount()))
+                    ));
+
+                // Generate advice
+                String advice = llamaService.generateAdvice(startDate, endDate, categoryExpenses, totalIncome);
+                adviceArea.setText(advice);
+            } catch (Exception e) {
+                adviceArea.setText("Error generating advice: " + e.getMessage());
+            } finally {
+                progressBar.setVisible(false);
+                generateButton.setEnabled(true);
+            }
+        });
     }
 } 
