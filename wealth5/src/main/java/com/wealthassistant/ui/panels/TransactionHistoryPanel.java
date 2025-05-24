@@ -191,10 +191,14 @@ public class TransactionHistoryPanel extends JPanel {
     private JPanel createButtonPanel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         
-        JButton exportButton = new JButton("Export to CSV");
-        exportButton.addActionListener(e -> exportToCSV());
+        JButton exportCsvButton = new JButton("Export to CSV");
+        exportCsvButton.addActionListener(e -> exportToCSV());
         
-        panel.add(exportButton);
+        JButton exportJsonButton = new JButton("Export to JSON");
+        exportJsonButton.addActionListener(e -> exportToJSON());
+        
+        panel.add(exportCsvButton);
+        panel.add(exportJsonButton);
         return panel;
     }
     
@@ -442,6 +446,68 @@ public class TransactionHistoryPanel extends JPanel {
                     line.append("\n");
                     writer.write(line.toString());
                 }
+                
+                JOptionPane.showMessageDialog(this, 
+                        "Data successfully exported to " + filePath, 
+                        "Export Successful", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, 
+                        "Export failed: " + e.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
+    private void exportToJSON() {
+        if (filteredTransactions.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                    "No data to export", 
+                    "Warning", 
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Export JSON File");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("JSON Files (*.json)", "json"));
+        
+        int result = fileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            String filePath = selectedFile.getAbsolutePath();
+            if (!filePath.toLowerCase().endsWith(".json")) {
+                filePath += ".json";
+            }
+            
+            try (FileWriter writer = new FileWriter(filePath)) {
+                writer.write("[\n");
+                
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                
+                for (int i = 0; i < filteredTransactions.size(); i++) {
+                    Transaction transaction = filteredTransactions.get(i);
+                    StringBuilder jsonObject = new StringBuilder();
+                    jsonObject.append("  {\n");
+                    jsonObject.append("    \"amount\": ").append(String.format("%.2f", transaction.getAmount())).append(",\n");
+                    jsonObject.append("    \"currency\": \"").append(transaction.getCurrencyUnit()).append("\",\n");
+                    jsonObject.append("    \"type\": \"").append(transaction.getType().toString()).append("\",\n");
+                    jsonObject.append("    \"category\": \"").append(transaction.getCategory().replace("\"", "\\\"")).append("\",\n");
+                    jsonObject.append("    \"date\": \"").append(transaction.getDate().format(dateFormatter)).append("\",\n");
+                    jsonObject.append("    \"notes\": \"").append(transaction.getNotes() != null ? transaction.getNotes().replace("\"", "\\\"") : "").append("\"\n");
+                    jsonObject.append("  }");
+                    
+                    if (i < filteredTransactions.size() - 1) {
+                        jsonObject.append(",");
+                    }
+                    jsonObject.append("\n");
+                    
+                    writer.write(jsonObject.toString());
+                }
+                
+                writer.write("]\n");
                 
                 JOptionPane.showMessageDialog(this, 
                         "Data successfully exported to " + filePath, 
