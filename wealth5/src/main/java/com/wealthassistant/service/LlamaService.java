@@ -58,30 +58,30 @@ public class LlamaService {
         }
 
         StringBuilder promptBuilder = new StringBuilder();
-        promptBuilder.append("你是一款个人财务软件的AI助手，专门负责分析用户的财务数据并提供建议。\n\n");
-        promptBuilder.append("你的主要职责是：\n");
-        promptBuilder.append("1. 分析用户的收入和支出模式\n");
-        promptBuilder.append("2. 提供具体的省钱建议\n");
-        promptBuilder.append("3. 制定合理的预算计划\n");
-        promptBuilder.append("4. 推荐适合的投资机会\n\n");
+        promptBuilder.append("You are an AI assistant for personal finance software, specialized in analyzing users' financial data and providing advice.\n\n");
+        promptBuilder.append("Your main responsibilities are:\n");
+        promptBuilder.append("1. Analyze users' income and spending patterns\n");
+        promptBuilder.append("2. Provide specific money-saving suggestions\n");
+        promptBuilder.append("3. Create reasonable budget plans\n");
+        promptBuilder.append("4. Recommend suitable investment opportunities\n\n");
         
-        promptBuilder.append("以下是用户的财务数据：\n");
-        promptBuilder.append(String.format("时间范围：%s 至 %s\n", 
+        promptBuilder.append("Here is the user's financial data:\n");
+        promptBuilder.append(String.format("Time period: %s to %s\n", 
             startDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
             endDate.format(DateTimeFormatter.ISO_LOCAL_DATE)));
-        promptBuilder.append(String.format("总收入：$%.2f\n\n", totalIncome));
+        promptBuilder.append(String.format("Total income: $%.2f\n\n", totalIncome));
         
-        promptBuilder.append("支出分类：\n");
+        promptBuilder.append("Expense categories:\n");
         for (Entry<String, Double> entry : categoryExpenses.entrySet()) {
-            promptBuilder.append(String.format("- %s：$%.2f\n", entry.getKey(), entry.getValue()));
+            promptBuilder.append(String.format("- %s: $%.2f\n", entry.getKey(), entry.getValue()));
         }
         
-        promptBuilder.append("\n请根据以上数据，提供以下分析：\n");
-        promptBuilder.append("1. 支出模式分析：评估各项支出是否合理\n");
-        promptBuilder.append("2. 省钱建议：针对每个支出类别提供具体的省钱方案\n");
-        promptBuilder.append("3. 预算优化：制定更合理的预算分配计划\n");
-        promptBuilder.append("4. 投资建议：基于可能的节省金额，推荐合适的投资机会\n\n");
-        promptBuilder.append("请用清晰的结构和要点来组织你的回答。");
+        promptBuilder.append("\nPlease provide the following analysis based on the above data:\n");
+        promptBuilder.append("1. Spending pattern analysis: Evaluate if each expense is reasonable\n");
+        promptBuilder.append("2. Money-saving suggestions: Provide specific saving strategies for each expense category\n");
+        promptBuilder.append("3. Budget optimization: Create a more reasonable budget allocation plan\n");
+        promptBuilder.append("4. Investment recommendations: Recommend suitable investment opportunities based on potential savings\n\n");
+        promptBuilder.append("Please organize your response with a clear structure and bullet points.");
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("model", MODEL_NAME);
@@ -123,4 +123,3 @@ public class LlamaService {
             return "Error generating advice: " + e.getMessage() + "\n\nPlease try again. If the problem persists, check if the Ollama service is running properly.";
         }
     }
-} 
