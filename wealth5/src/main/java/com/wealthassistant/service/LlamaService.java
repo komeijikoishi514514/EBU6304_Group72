@@ -123,3 +123,4 @@ public class LlamaService {
             return "Error generating advice: " + e.getMessage() + "\n\nPlease try again. If the problem persists, check if the Ollama service is running properly.";
         }
     }
+}
