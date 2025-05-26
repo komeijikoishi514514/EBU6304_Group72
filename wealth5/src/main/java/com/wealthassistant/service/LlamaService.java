@@ -48,7 +48,7 @@ public class LlamaService {
         }
     }
 
-    public String generateAdvice(LocalDate startDate, LocalDate endDate, Map<String, Double> categoryExpenses, double totalIncome) {
+    public String generateAdvice(LocalDate startDate, LocalDate endDate, Map<String, Double> categoryExpenses, double totalIncome, Map<String, Double> categoryBudgets) {
         if (!isServiceAvailable()) {
             return "Error: Ollama service is not available. Please make sure to:\n" +
                    "1. Install Ollama from https://ollama.ai\n" +
@@ -71,15 +71,28 @@ public class LlamaService {
             endDate.format(DateTimeFormatter.ISO_LOCAL_DATE)));
         promptBuilder.append(String.format("Total income: $%.2f\n\n", totalIncome));
         
-        promptBuilder.append("Expense categories:\n");
+        promptBuilder.append("Expense categories and budgets:\n");
         for (Entry<String, Double> entry : categoryExpenses.entrySet()) {
-            promptBuilder.append(String.format("- %s: $%.2f\n", entry.getKey(), entry.getValue()));
+            String category = entry.getKey();
+            double expense = entry.getValue();
+            double budget = categoryBudgets.getOrDefault(category, 0.0);
+            promptBuilder.append(String.format("- %s:\n", category));
+            promptBuilder.append(String.format("  * Actual expense: $%.2f\n", expense));
+            promptBuilder.append(String.format("  * Budget: $%.2f\n", budget));
+            if (budget > 0) {
+                double difference = expense - budget;
+                if (difference > 0) {
+                    promptBuilder.append(String.format("  * Over budget by: $%.2f\n", difference));
+                } else {
+                    promptBuilder.append(String.format("  * Under budget by: $%.2f\n", -difference));
+                }
+            }
         }
         
         promptBuilder.append("\nPlease provide the following analysis based on the above data:\n");
-        promptBuilder.append("1. Spending pattern analysis: Evaluate if each expense is reasonable\n");
-        promptBuilder.append("2. Money-saving suggestions: Provide specific saving strategies for each expense category\n");
-        promptBuilder.append("3. Budget optimization: Create a more reasonable budget allocation plan\n");
+        promptBuilder.append("1. Spending pattern analysis: Evaluate if each expense is reasonable and compare with budget\n");
+        promptBuilder.append("2. Money-saving suggestions: Provide specific saving strategies for each expense category, especially for categories over budget\n");
+        promptBuilder.append("3. Budget optimization: Create a more reasonable budget allocation plan based on actual spending patterns\n");
         promptBuilder.append("4. Investment recommendations: Recommend suitable investment opportunities based on potential savings\n\n");
         promptBuilder.append("Please organize your response with a clear structure and bullet points.");
 
@@ -123,4 +136,3 @@ public class LlamaService {
             return "Error generating advice: " + e.getMessage() + "\n\nPlease try again. If the problem persists, check if the Ollama service is running properly.";
         }
     }
-}
